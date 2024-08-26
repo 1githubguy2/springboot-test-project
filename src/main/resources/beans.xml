@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+    <context:property-placeholder location="classpath:test.properties"/>
+    <!-- 指定Bean的ID和Bean实例对应的类型 -->
+    <bean id="person" class="com.yjl.Person">
+        <!-- 指定Bean的属性名称及属性值，此处只是一个基础属性，
+         还可以指定引用类型属性，用来引用另外一个bean -->
+        <property name="uuid" value="123"/>
+        <property name="userName" value="${name}"/>
+    </bean>
+</beans>

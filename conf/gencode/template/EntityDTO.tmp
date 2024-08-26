@@ -1,0 +1,15 @@
+package ${basePackage}.domain.dto;
+
+${importPackages}
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+
+import java.io.Serializable;
+
+@Data
+public class ${EntityName}DTO implements Serializable {
+
+    @ApiModelProperty(value = "主键(新增提交数据可以忽略)", hidden = true)
+    private String id;
+${dtoProperties}
+}

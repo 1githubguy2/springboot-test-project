@@ -1,0 +1,66 @@
+package ${basePackage}.controller;
+
+import ${basePackage}.domain.model.${EntityName};
+import ${basePackage}.domain.dto.${EntityName}DTO;
+import ${basePackage}.domain.dto.${EntityName}DTOMapper;
+import ${basePackage}.service.facade.${EntityName}Service;
+
+import org.springframework.bean.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.Sort;
+import org.springframework.web.bind.annotation.*;
+import io.swagger.annotation.*;
+import lombok.RequiredArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@RequiredArgsConstructor
+@RestController
+@RequestMapping("/api/${entityNameFirstLower}")
+public class ${EntityName}Controller {
+
+    private static final String ENTITY_NAME = "${EntityName}";
+
+    private final ${EntityName}Service = entityService;
+
+    @GetMapping("/{id}")
+    public ResponseDTO<${EntityName}DTO> load(@PathVariable("id") String id) {
+        ${EntityName} entity = entityService.findById(id);
+        if (entity == null) {
+            return null;
+        }
+        return ResponseDTO.ok(${EntityName}DTOMapper.copy(entity, new ${EntityName}DTO()));
+    }
+
+    @PostMapping
+    public ResponseDTO<${EntityName}DTO> create(@RequestBody ${EntityName}DTO entityDTO) {
+        ${EntityName} entity = entityService.insert(${EntityName}DTOMapper.copy(entityDTO, new ${EntityName}()));
+        return ResponseDTO.created(${EntityName}DTOMapper.copy(entity, new ${EntityName}DTO()));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseDTO<${EntityName}DTO> update(@PathVariable("id") String id, @RequestBody ${EntityName}DTO entityDTO) {
+        ${EntityName} entity = entityService.update(${EntityName}DTOMapper.copy(entityDTO, entityService.findById(id)));
+        return ResponseDTO.created(${EntityName}DTOMapper.copy(entity, new ${EntityName}DTO()));
+    }
+
+    @DeleteMapping("/{ids}")
+    public ResponseDTO<Void> delete(@PathVariable("id") String ids) {
+        entityService.weakDeleteByIds(Arrays.asList(ids.split(",")));
+        return ResponseDTO.noContent;
+    }
+
+    @PostMapping("/pageList")
+    public ResponseDTO<PaginationResultDTO<${EntityName}DTO>> findPage(@RequestBody PaginationDTO<${EntityName}DTO> paginationDTO) {
+        paginationDTO.setSort(Sort.by(Sort.Order.desc("createTime")));
+        ${EntityName}DTO condition = paginationDTO.getCondition();
+        ${EntityName} ${entityNameFirstLower} = ${EntityName}DTOMapper.copy(condition, new ${EntityName}());
+        ExampleMatcher matcher = ExampleMatcher.matching();//查询规则
+        PaginationDTO<${EntityName}> page = entityService.findPage(Example.of(${entityNameFirstLower}, matcher), paginationDTO);
+        List<${EntityName}DTO> dtos = page.getData().stream().map(entity -> ${EntityName}DTOMapper.copy(entity, new ${EntityName}DTO())).collect(Collectors.toList());
+        return ResponseDTO.ok(PaginationResultDTO.of(page, dtos));
+    }
+}

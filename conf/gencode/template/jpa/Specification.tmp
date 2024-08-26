@@ -1,0 +1,35 @@
+package ${basePackage}.service.specification;
+
+import ${basePackage}.domain.model.${EntityName};
+import ${basePackage}.domain.dto.${EntityName}DTO;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.util.StringUtils;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+@Slf4j
+@RequiredArgsConstructor
+@Service
+public interface ${EntityName}Specification implements Specification<${EntityName}> {
+
+    private final ${EntityName}DTO condition;
+
+    public ${EntityName}Specification(${EntityName}DTO condition) {
+        this.condition = condition;
+    }
+
+    @Override
+    public Predicate toPredicate(Root<${EntityName}> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+        List<Predicate> ands = new ArrayList<>();
+        ands.add(cb.equal(root.get("deleted"), false));
+
+        ${setter}
+        return cb.and(ands.toArray(new Predicate[0]));
+    }
+}

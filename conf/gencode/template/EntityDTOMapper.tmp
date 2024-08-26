@@ -1,0 +1,30 @@
+package ${basePackage}.domain.mapper;
+
+import ${basePackage}.domain.dto.${EntityName}DTO;
+import ${basePackage}.domain.model.${EntityName};
+
+@Data
+public class ${EntityName}DTOMapper {
+
+    public static ${EntityName} copy(${EntityName}DTO source, ${EntityName} target) {
+        if (source == null) {
+            return target;
+        }
+        if (target.getId() == null) {
+            target.setId(source.getId());
+        }
+        ${setters}
+        return target;
+    }
+
+    public static ${EntityName}DTO copy(${EntityName} source, ${EntityName}DTO target) {
+        if (source == null) {
+            return target;
+        }
+        if (target.getId() == null) {
+            target.setId(source.getId());
+        }
+        ${setters}
+        return target;
+    }
+}

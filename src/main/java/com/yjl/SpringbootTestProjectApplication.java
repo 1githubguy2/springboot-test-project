@@ -1,5 +1,6 @@
 package com.yjl;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -7,6 +8,7 @@ import org.springframework.kafka.annotation.EnableKafka;
 
 @SpringBootApplication
 @EnableKafka
+@MapperScan("com.yjl.mapper*")
 public class SpringbootTestProjectApplication {
 
     public static void main(String[] args) {
